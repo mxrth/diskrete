@@ -3,11 +3,11 @@ CPPFLAGS := -Wall -Wextra --std=c++11 --pedantic -g3
 
 BINDIR := bin
 
-EXECUTABLE := components
+EXECUTABLE := $(BINDIR)/components
 OBJECTS := components.o graph.o
 
 $(EXECUTABLE): components.o graph.o
-	$(CXX) -o $(BINDIR)/$@ $^
+	$(CXX) -o $@ $^
 
 components.o: graph.C components.C
 
