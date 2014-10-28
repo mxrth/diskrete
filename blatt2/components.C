@@ -1,5 +1,3 @@
-// testgraph.C (Read digraph from file and print)
-
 #include "graph.h"
 
 #include <vector>
@@ -25,24 +23,30 @@ int main(int argc, char* argv[])
 	    for(Graph::NodeId v = 0; v < g.num_nodes(); v++) {
 		if(!visited[v]) visit1(g, v, visited, psi_inverse);
 	    }
-	    std::cout << "Psi^-1:\n";
-	    for(auto i : psi_inverse)
-		std::cout << i << ", ";
-	    std::cout << "\n";
 
+	    for(auto v : visited) {
+		if(!v) std::cout << "ERROR\n";
+	    }
 	    std::fill(visited.begin(), visited.end(), false);
 	    Graph::NodeId k=0;
 	    comp_type components;
-
-	    for(Graph::NodeId i = g.num_nodes()-1; i > 0; i--) {
+	    /*
+	    for(size_t i = 0; i < psi_inverse.size(); i++) {
+		std::cout << "psi_inverse[" << i << "] = " << psi_inverse[i] << std::endl;
+	    }*/
+	    
+	    for(Graph::NodeId i = g.num_nodes(); i-->0;) {
 		if(!visited[ psi_inverse[i] ] ) {
 		    visit2(g, psi_inverse[i], visited,k,  components);
 		    k++;
 		}
 	    }
-	    std::cout << "Number of components: " << components.size() << "\n";
+	    /*for(size_t i=0; i < visited.size(); i++) {
+		if(!visited[i]) std::cout << "ERROR at " << i << std::endl;
+	    }*/
 	    print_solution(components);
-
+	    for(auto c : components)
+		delete c;
       }
       return 0;
 }
@@ -67,24 +71,20 @@ void visit1(Graph &g, Graph::NodeId v, vector<bool> &visited, vector<Graph::Node
 	if(!visited[w])
 	    visit1(g, w, visited, psi_inverse);
     }
-    std::cout << "N=" << N << "\n";
     psi_inverse[N] = v;
     N++;
 }
 
 
 void visit2(Graph &g, Graph::NodeId v, vector<bool> &visited, size_t k, comp_type &components) {
+    //std::cout << "VISIT2(" << v << ")\n";
     visited[v] = true;
     for(auto e : g.get_node(v).in_edges()) {
 	auto w = g.get_edge(e).get_tail();
 	if(!visited[w])
 	    visit2(g, w, visited, k, components);
     }
-    // size=0, k=0 ==> 0 < 1 ==> size=1 ==> components[k] OK
-    // size=4, k=3 ==> 4 !< 4 ==> size=4 ==> components[3] OK
-    std::cout << "k=" << k << "\n" << "size=" << components.size() << "\n";
     while(k >= components.size() ) components.push_back(new vector<Graph::NodeId>);
-    std::cout << "k=" << k << "\n" << "size=" << components.size() << "\n";
     components[k]->push_back(v);
 }
 
