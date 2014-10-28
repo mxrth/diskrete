@@ -1,10 +1,10 @@
-CXX = clang++
-CPPFLAGS = -Wall -Wextra --std=c++11
+CXX := clang++
+CPPFLAGS := -Wall -Wextra --std=c++11 --pedantic -g3
 
-BINDIR = bin
+BINDIR := bin
 
-EXECUTABLE = components
-OBJECTS = components.o graph.o
+EXECUTABLE := components
+OBJECTS := components.o graph.o
 
 $(EXECUTABLE): components.o graph.o
 	$(CXX) -o $(BINDIR)/$@ $^
