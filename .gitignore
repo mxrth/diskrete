@@ -1,4 +1,7 @@
-bin/
+bin/*
+!bin/.gitkeep
+dist/*
+!dist/.gitkeep
 
 # Compiled Object files
 *.slo
