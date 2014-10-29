@@ -37,6 +37,7 @@ int main(int argc, char* argv[])
 		if(!visited[ psi_inverse[i] ] ) {
 		    visit2(g, psi_inverse[i], visited,k,  components);
 		    k++; //after visit2 the next call will find a new component
+		    //incrementing _after_ visit2, because we start numbering at 0, not at 1
 		}
 	    }
 	   print_solution(components);
@@ -50,15 +51,17 @@ int main(int argc, char* argv[])
 void print_solution(comp_type &comps) {
     std::cout << comps.size() << "\n";
     for(auto c : comps) {
-	std::sort(c->begin(), c->end());
+	std::sort(c->begin(), c->end()); //output is required to be sorted
 	for(auto v : *c) {
-	    std::cout << v << " ";
+	    std::cout << v << " "; //Specification does not say anything about trailing newlines
 	}
 	std::cout << "\n";
     }
 }
 
 void visit1(Graph &g, Graph::NodeId v, vector<bool> &visited, vector<Graph::NodeId> &psi_inverse) {
+    //N is the current psi value
+    //it has to be made static since later calls to visit1 has to have access to this value
     static size_t N = 0;
     visited[v] = true;
     auto node = g.get_node(v);
@@ -67,6 +70,7 @@ void visit1(Graph &g, Graph::NodeId v, vector<bool> &visited, vector<Graph::Node
 	if(!visited[w])
 	    visit1(g, w, visited, psi_inverse);
     }
+    //because we start numbering at 0 we first set psi, then increment N
     psi_inverse[N] = v;
     N++;
 }
@@ -75,10 +79,12 @@ void visit1(Graph &g, Graph::NodeId v, vector<bool> &visited, vector<Graph::Node
 void visit2(Graph &g, Graph::NodeId v, vector<bool> &visited, size_t k, comp_type &components) {
     visited[v] = true;
     for(auto e : g.get_node(v).in_edges()) {
-	auto w = g.get_edge(e).get_tail();
+	auto w = g.get_edge(e).get_tail(); //walk in the opposite direction
 	if(!visited[w])
 	    visit2(g, w, visited, k, components);
     }
+    //make sure there is enough space for the (possibly new) str.con. component
+    //The vectors for the components are allocated via `new` so they aren't lost when the func. returns
     while(k >= components.size() ) components.push_back(new vector<Graph::NodeId>);
     components[k]->push_back(v);
 }
