@@ -5,6 +5,7 @@
 
 using std::vector; 
 
+//comp_type is the data-structure where the strongly-connected components are stored
 typedef vector< vector<Graph::NodeId>* > comp_type;
 
 void visit1(Graph &g, Graph::NodeId v, vector<bool> &visited, vector<Graph::NodeId> &psi_inverse);
@@ -17,35 +18,30 @@ int main(int argc, char* argv[])
       {
             Graph g = read_graph(argv[1]);
 
-	    vector<bool> visited(g.num_nodes(), false);
-	    vector<Graph::NodeId> psi_inverse(g.num_nodes(), 0);
-
+	    vector<bool> visited(g.num_nodes(), false); //at the beginning, no node is visited
+	    // it suffices to store psi^-1, psi is acutally never needed directly
+	    vector<Graph::NodeId> psi_inverse(g.num_nodes(), 0); 
+	    
+	    //First walk through G, building up psi_inverse
 	    for(Graph::NodeId v = 0; v < g.num_nodes(); v++) {
 		if(!visited[v]) visit1(g, v, visited, psi_inverse);
 	    }
 
-	    for(auto v : visited) {
-		if(!v) std::cout << "ERROR\n";
-	    }
-	    std::fill(visited.begin(), visited.end(), false);
-	    Graph::NodeId k=0;
+	    std::fill(visited.begin(), visited.end(), false); //reset visited
+	    Graph::NodeId k=0; //number of the current strongly-conn. component
 	    comp_type components;
-	    /*
-	    for(size_t i = 0; i < psi_inverse.size(); i++) {
-		std::cout << "psi_inverse[" << i << "] = " << psi_inverse[i] << std::endl;
-	    }*/
 	    
+	    //Second walk through G, this time backwards, 
+	    //starting with the node with the greatest psi-value
 	    for(Graph::NodeId i = g.num_nodes(); i-->0;) {
 		if(!visited[ psi_inverse[i] ] ) {
 		    visit2(g, psi_inverse[i], visited,k,  components);
-		    k++;
+		    k++; //after visit2 the next call will find a new component
 		}
 	    }
-	    /*for(size_t i=0; i < visited.size(); i++) {
-		if(!visited[i]) std::cout << "ERROR at " << i << std::endl;
-	    }*/
-	    print_solution(components);
-	    for(auto c : components)
+	   print_solution(components);
+	   //free the components vector (inner vectors were allocated by visit2)
+	   for(auto c : components)
 		delete c;
       }
       return 0;
@@ -77,7 +73,6 @@ void visit1(Graph &g, Graph::NodeId v, vector<bool> &visited, vector<Graph::Node
 
 
 void visit2(Graph &g, Graph::NodeId v, vector<bool> &visited, size_t k, comp_type &components) {
-    //std::cout << "VISIT2(" << v << ")\n";
     visited[v] = true;
     for(auto e : g.get_node(v).in_edges()) {
 	auto w = g.get_edge(e).get_tail();
