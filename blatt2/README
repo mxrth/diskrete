@@ -1,0 +1,9 @@
+Source in components.C
+
+Testscript laufen lassen:
+    make
+    test/test.sh #muss aus dem Ordner über Test aufgerufen werden
+
+Programm auf Graph ausführen:
+    make
+    bin/components /path/to/graph
