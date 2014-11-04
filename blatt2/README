@@ -1,7 +1,7 @@
 Source in components.C
 
 Testscript laufen lassen:
-    make
+    make #evtl make CXX=g++ falls clang nicht installiert ist
     test/test.sh #muss aus dem Ordner über Test aufgerufen werden
 
 Programm auf Graph ausführen:
