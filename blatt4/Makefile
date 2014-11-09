@@ -8,16 +8,16 @@ DISTDIR := ../dist
 DISTFILE := $(DISTDIR)/$(BLATT).tar.gz
 
 ### FILL IN EXECUTABLE AND OBJECTS HERE ###
-EXECUTABLE := 
-OBJECTS := graph.o
+EXECUTABLE := mbf 
+OBJECTS := graph.o main.o
 ###########################################
 
 $(EXECUTABLE): $(OBJECTS) 
-	$(CXX) -o $@ $^
+	$(CXX) $(CPPFLAGS) -o $@ $^
 
 graph.o: graph.C graph.h
 
-main.o: main.c graph.o graph.h wgraph.h
+main.o: main.C graph.h wgraph.h
 
 .PHONY: clean
 clean:

@@ -44,7 +44,7 @@ public:
       explicit Graph(NodeId num_nodes);     // constructor cannot be called implicitly
       Graph();
 
-      EdgeId add_edge(NodeId tail, NodeId head);
+      virtual EdgeId add_edge(NodeId tail, NodeId head);
       NodeId add_node();
 
       NodeId num_nodes() const;
