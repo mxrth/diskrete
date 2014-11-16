@@ -5,7 +5,7 @@ CPPFLAGS := -Wall -Wextra --std=c++11 --pedantic -g3
 
 BINDIR := bin
 DISTDIR := ../dist
-DISTFILE := $(DISTDIR)/$(BLATT).tar.gz
+DISTFILE := $(DISTDIR)/$(BLATT)BenKMaxR.tar.gz
 
 ### FILL IN EXECUTABLE AND OBJECTS HERE ###
 EXECUTABLE := mbf 
