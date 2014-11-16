@@ -21,14 +21,15 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 		std::set<Graph::NodeId> &visited, Graph::NodeId currentNodeId) {
 	std::vector<Graph::EdgeId> angrenzendeKanten;
 
+	auto currentNode = G.get_node(currentNodeId);
 	//sammle Kanten
-	for (auto eId : G.get_node(currentNodeId).in_edges()) {
+	for (auto eId : currentNode.in_edges()) {
 		if (flow[eId] == 0) {
 			continue;
 		}
 		angrenzendeKanten.push_back(eId);
 	}
-	for (auto eId : G.get_node(currentNodeId).in_edges()) {
+	for (auto eId : currentNode.out_edges()) {
 		if (flow[eId] == 1) {
 			continue;
 		}
