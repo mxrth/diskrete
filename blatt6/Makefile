@@ -9,7 +9,7 @@ DISTFILE := $(DISTDIR)/$(BLATT)_BenKMaxR.tar.gz
 
 ### FILL IN EXECUTABLE AND OBJECTS HERE ###
 EXECUTABLE := disjoint_paths 
-OBJECTS := graph.o main.o
+OBJECTS := graph.o main.o max_flow.o
 ###########################################
 
 $(EXECUTABLE): $(OBJECTS) 
@@ -17,7 +17,9 @@ $(EXECUTABLE): $(OBJECTS)
 
 graph.o: graph.C graph.h
 
-main.o: main.C graph.h
+main.o: main.C graph.h max_flow.h
+
+max_flow.o: max_flow.C max_flow.h
 
 .PHONY: clean
 clean:

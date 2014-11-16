@@ -59,7 +59,6 @@ public:
       static const EdgeId invalid_edge;
       static const NodeId invalid_node;
 
-private:
       std::vector<Node> _nodes;
       std::vector<Edge> _edges;
 };
