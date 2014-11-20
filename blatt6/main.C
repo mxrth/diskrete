@@ -17,13 +17,13 @@ Graph &to_digraph(Graph& G) {
     for(Graph::NodeId v = 0; v < last_node; v++) {
 	visited[v] = true;
 	for(auto e : G.get_node(v).out_edges()) {
-	    w = G.get_edge(e).get_head();
-	    if(visted[w] || w > last_node) 
+	    auto w = G.get_edge(e).get_head();
+	    if(visited[w] || w > last_node)
 	        continue;
 	    visited[w] = true;
 
-	    NodeId top = G.add_node();
-	    NodeId bot = G.add_node();
+	    Graph::NodeId top = G.add_node();
+	    Graph::NodeId bot = G.add_node();
 	    G.change_head(e, top);
 	    G.add_edge(top, bot);
 	    G.add_edge(w, top);
