@@ -11,7 +11,8 @@ int main(int argc, char* argv[]) {
 	std::cout << "Usage: " << argv[0] << " <graph_file>\n";
     }
     Graph G = read_graph(argv[1]); 
-    G = preprocess(G);
+    preprocess(G);
+    std::cout << "Number of disjoint paths: " << get_max_flow(G, 0, 1) << std::endl; 
 }
 
 
@@ -36,11 +37,11 @@ void to_digraph(Graph& G) {
     }
 }
 
-Graph &preprocess(Graph& G) {
+void preprocess(Graph& G) {
     Graph::NodeId s = 0;
     Graph::NodeId t = 1;
     Graph::NodeId last_original_node = G.num_nodes()-1;
-    G = to_digraph(G);
+    to_digraph(G);
     //range over all nodes of the original graph
     //for each node w, insert a new node v
     //add a node e=(v,w)
