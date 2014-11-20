@@ -3,17 +3,7 @@
 
 using std::vector;
 
-Graph &to_digraph(Graph& G);
-Graph &preprocess(Graph& G);
 
-int main(int argc, char* argv[]) {
-    if(argc != 2) {
-	std::cout << "Usage: " << argv[0] << " <graph_file>\n";
-    }
-    Graph G = read_graph(argv[1]); 
-    preprocess(G);
-    std::cout << "Number of disjoint paths: " << get_max_flow(G, 0, 1) << std::endl; 
-}
 
 
 void to_digraph(Graph& G) {
@@ -53,4 +43,15 @@ void preprocess(Graph& G) {
 	    G.change_head(incoming, v);
 	}
     }
+}
+
+
+
+int main(int argc, char* argv[]) {
+    if(argc != 2) {
+	std::cout << "Usage: " << argv[0] << " <graph_file>\n";
+    }
+    Graph G = read_graph(argv[1]);
+    preprocess(G);
+    std::cout << "Number of disjoint paths: " << get_max_flow(G, 0, 1) << std::endl;
 }
