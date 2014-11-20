@@ -27,6 +27,8 @@ public:
             std::vector<EdgeId> _outgoing;
       };
 
+      void delete_edge(NodeId tail, NodeId head);
+
       class Edge
       {
       public:

@@ -17,17 +17,20 @@ Graph &to_digraph(Graph& G) {
     NodeId last_node = G.num_nodes()-1;
     for(v = 0; v < last_node; v++) {
 	visited[v] = true;
-	for(auto w : G.get_node(v).out_edges()) {
-	    if(visted[w] || w > last_node) 
-		continue;
-	    visited[w] = true;
+	for(auto e : G.get_node(v).out_edges()) {
+	    for(auto w : e) {
+		if(visted[w] || w > last_node) 
+		    continue;
+		visited[w] = true;
 
-	    NodeId top = G.add_node();
-	    NodeId bot = G.add_node();
-	    G.add_edge(v, top);
-	    G.add_edge(top, bot);
-	    G.add_edge(w, top);
-	    G.add_edge(bot, v);
+		NodeId top = G.add_node();
+		NodeId bot = G.add_node();
+		G.add_edge(v, top);
+		G._edges[]
+		G.add_edge(top, bot);
+		G.add_edge(w, top);
+		G.add_edge(bot, v);
+	    }
 	}
     }
 }
