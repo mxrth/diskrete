@@ -22,7 +22,6 @@ public:
             std::vector<EdgeId> const & in_edges() const;     
             std::vector<EdgeId> const & out_edges() const;
 
-      private:
             std::vector<EdgeId> _incoming;
             std::vector<EdgeId> _outgoing;
       };
@@ -38,13 +37,14 @@ public:
             NodeId get_tail() const;
             NodeId get_head() const;
 
-      private:
             NodeId _tail;
             NodeId _head;
       };
 
       explicit Graph(NodeId num_nodes);     // constructor cannot be called implicitly
       Graph();
+
+      void change_head(EdgeId eId, NodeId newHead);
 
       EdgeId add_edge(NodeId tail, NodeId head);
       NodeId add_node();

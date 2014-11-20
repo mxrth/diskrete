@@ -4,6 +4,7 @@
 #include <sstream>
 #include <limits>
 #include <stdexcept>
+#include <algorithm>
 
 #include "graph.h"
 
@@ -40,6 +41,20 @@ Graph::EdgeId Graph::add_edge(NodeId tail, NodeId head)
       _nodes[head].add_incoming_edge(edge_id);
       return edge_id;
       }
+}
+
+void Graph::change_head(EdgeId eId, NodeId newHead)
+{
+	Edge e = get_edge(eId);
+	_nodes[e.get_head()]._incoming.erase(
+			std::find(
+					_nodes[e.get_head()]._incoming.begin(),
+					_nodes[e.get_head()]._incoming.end(),
+					eId
+					)
+	);
+	_edges[eId]._head = newHead;
+	_nodes[newHead].add_incoming_edge(eId);
 }
 
 void Graph::Node::add_incoming_edge(EdgeId edge)
