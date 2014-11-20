@@ -7,11 +7,15 @@ Graph &to_digraph(Graph& G);
 Graph &preprocess(Graph& G);
 
 int main(int argc, char* argv[]) {
-    
+    if(argc != 2) {
+	std::cout << "Usage: " << argv[0] << " <graph_file>\n";
+    }
+    Graph G = read_graph(argv[1]); 
+    G = preprocess(G);
 }
 
 
-Graph &to_digraph(Graph& G) {
+void to_digraph(Graph& G) {
     vector<bool> visited(G.num_nodes(), false);
     Graph::NodeId last_node = G.num_nodes()-1;
     for(Graph::NodeId v = 0; v < last_node; v++) {
