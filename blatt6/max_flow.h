@@ -1,7 +1,7 @@
 #ifndef MAX_FLOW_H
 #define MAX_FLOW_H
 
-#include <graph>
+#include "graph.h"
 
 //expects a directed graph with the costs of all edges being one
 //and calculates the maximum flow in this graph
