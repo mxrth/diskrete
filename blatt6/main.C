@@ -42,7 +42,7 @@ Graph &preprocess(Graph& G) {
     //add a node e=(v,w)
     //for each incoming node of w, change the head of that edge to v
     for(int w = 0; w <= last_original_node; w++) {
-	v = G.add_node();
+	auto v = G.add_node();
 	G.add_edge(v, w);
 	for(auto incoming : G.get_node(w).in_edges()) {
 	    G.change_head(incoming, v);
