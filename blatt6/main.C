@@ -21,13 +21,13 @@ void to_digraph(Graph& G) {
     for(Graph::NodeId v = 0; v < last_node; v++) {
 	visited[v] = true;
 	for(auto e : G.get_node(v).out_edges()) {
-	    w = G.get_edge(e).get_head();
-	    if(visted[w] || w > last_node) 
+	    auto w = G.get_edge(e).get_head();
+	    if(visited[w] || w > last_node)
 	        continue;
 	    visited[w] = true;
 
-	    NodeId top = G.add_node();
-	    NodeId bot = G.add_node();
+	    Graph::NodeId top = G.add_node();
+	    Graph::NodeId bot = G.add_node();
 	    G.change_head(e, top);
 	    G.add_edge(top, bot);
 	    G.add_edge(w, top);
@@ -46,7 +46,7 @@ Graph &preprocess(Graph& G) {
     //add a node e=(v,w)
     //for each incoming node of w, change the head of that edge to v
     for(int w = 0; w <= last_original_node; w++) {
-	v = G.add_node();
+	auto v = G.add_node();
 	G.add_edge(v, w);
 	for(auto incoming : G.get_node(w).in_edges()) {
 	    G.change_head(incoming, v);
