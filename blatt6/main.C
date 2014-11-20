@@ -17,19 +17,17 @@ Graph &to_digraph(Graph& G) {
     for(Graph::NodeId v = 0; v < last_node; v++) {
 	visited[v] = true;
 	for(auto e : G.get_node(v).out_edges()) {
-	    for(auto w : e) {
-		if(visted[w] || w > last_node) 
-		    continue;
-		visited[w] = true;
+	    w = G.get_edge(e).get_head();
+	    if(visted[w] || w > last_node) 
+	        continue;
+	    visited[w] = true;
 
-		NodeId top = G.add_node();
-		NodeId bot = G.add_node();
-		G.add_edge(v, top);
-		G._edges[]
-		G.add_edge(top, bot);
-		G.add_edge(w, top);
-		G.add_edge(bot, v);
-	    }
+	    NodeId top = G.add_node();
+	    NodeId bot = G.add_node();
+	    G.change_head(e, top);
+	    G.add_edge(top, bot);
+	    G.add_edge(w, top);
+	    G.add_edge(bot, v);
 	}
     }
 }
@@ -39,8 +37,15 @@ Graph &preprocess(Graph& G) {
     Graph::NodeId t = 1;
     Graph::NodeId last_original_node = G.num_nodes()-1;
     G = to_digraph(G);
-    for(int v = 0; v <= last_original_node; v++) {
-	auto new_node = G.add_node();
-	G.add_edge(v, new_node);
+    //range over all nodes of the original graph
+    //for each node w, insert a new node v
+    //add a node e=(v,w)
+    //for each incoming node of w, change the head of that edge to v
+    for(int w = 0; w <= last_original_node; w++) {
+	v = G.add_node();
+	G.add_edge(v, w);
+	for(auto incoming : G.get_node(w).in_edges()) {
+	    G.change_head(incoming, v);
+	}
     }
 }
