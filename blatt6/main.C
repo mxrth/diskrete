@@ -37,4 +37,8 @@ Graph &preprocess(Graph& G) {
     NodeId t = 1;
     NodeId last_original_node = G.num_nodes()-1;
     G = to_digraph(G);
+    for(int v = 0; v <= last_original_node; v++) {
+	auto new_node = G.add_node();
+	G.add_edge(v, new_node);
+    }
 }
