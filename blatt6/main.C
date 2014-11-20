@@ -2,7 +2,6 @@
 #include "graph.h"
 
 using std::vector;
-using Graph::NodeId, Graph::EdgeId;
 
 Graph &to_digraph(Graph& G);
 Graph &preprocess(Graph& G);
@@ -14,8 +13,8 @@ int main(int argc, char* argv[]) {
 
 Graph &to_digraph(Graph& G) {
     vector<bool> visited(G.num_nodes(), false);
-    NodeId last_node = G.num_nodes()-1;
-    for(v = 0; v < last_node; v++) {
+    Graph::NodeId last_node = G.num_nodes()-1;
+    for(Graph::NodeId v = 0; v < last_node; v++) {
 	visited[v] = true;
 	for(auto e : G.get_node(v).out_edges()) {
 	    for(auto w : e) {
@@ -36,9 +35,9 @@ Graph &to_digraph(Graph& G) {
 }
 
 Graph &preprocess(Graph& G) {
-    NodeId s = 0;
-    NodeId t = 1;
-    NodeId last_original_node = G.num_nodes()-1;
+    Graph::NodeId s = 0;
+    Graph::NodeId t = 1;
+    Graph::NodeId last_original_node = G.num_nodes()-1;
     G = to_digraph(G);
     for(int v = 0; v <= last_original_node; v++) {
 	auto new_node = G.add_node();
