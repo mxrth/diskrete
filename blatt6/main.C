@@ -7,7 +7,7 @@ using std::vector;
 
 
 void to_digraph(Graph& G) {
-    vector<bool> visited(G.num_nodes(), false);
+    vector<bool> visited(G.num_nodes()*3, false);
     Graph::NodeId last_node = G.num_nodes()-1;
     for(Graph::NodeId v = 0; v < last_node; v++) {
 	visited[v] = true;
