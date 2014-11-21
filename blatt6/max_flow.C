@@ -16,7 +16,7 @@ Graph::NodeId getOtherNode(Graph &G, Graph::EdgeId eId, Graph::NodeId vId) {
 
 
 bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
-		std::set<Graph::NodeId> &visited, Graph::NodeId currentNodeId) {
+		std::vector<bool> &visited, Graph::NodeId currentNodeId) {
 	std::vector<Graph::EdgeId> angrenzendeKanten;
 
 	auto currentNode = G.get_node(currentNodeId);
@@ -35,11 +35,11 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 
 	for (Graph::EdgeId eId : angrenzendeKanten) {
 		auto wId = getOtherNode(G, eId, currentNodeId);
-		if (visited.find(wId) != visited.end()) {
+		if (visited[wId] == true) {
 			continue;
 		}
+		visited[wId] = true;
 		flow[eId] = !flow[eId];
-		visited.insert(wId);
 		if (wId == tId) {
 			return true;
 		}
@@ -55,13 +55,13 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 
 
 int get_max_flow(Graph &G, Graph::NodeId s, Graph::NodeId tId) {
-	std::set<Graph::NodeId> visited;
+
 	std::vector<bool> flow(G.num_edges(), 0);
 	int anzahlWege = 0;
 
 	while (true) {
-		visited.clear();
-		visited.insert(s);
+		std::vector<bool> visited(G.num_nodes(), false);
+		visited[s] = true;
 		if(dfs(G, flow, tId, visited, s)){
 			anzahlWege++;
 		}else{
