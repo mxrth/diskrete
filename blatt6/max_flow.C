@@ -58,7 +58,7 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 
 int get_max_flow(Graph &G, Graph::NodeId s, Graph::NodeId tId) {
 	std::set<Graph::NodeId> visited;
-	std::vector<bool> flow(G.num_nodes(), 0);
+	std::vector<bool> flow(G.num_edges(), 0);
 	int anzahlWege = 0;
 
 	while (true) {
