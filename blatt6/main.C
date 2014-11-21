@@ -28,15 +28,13 @@ void to_digraph(Graph& G) {
 }
 
 void preprocess(Graph& G) {
-    Graph::NodeId s = 0;
-    Graph::NodeId t = 1;
     Graph::NodeId last_original_node = G.num_nodes()-1;
     to_digraph(G);
     //range over all nodes of the original graph
     //for each node w, insert a new node v
     //add a node e=(v,w)
     //for each incoming node of w, change the head of that edge to v
-    for(int w = 0; w <= last_original_node; w++) {
+    for(Graph::NodeId w = 0; w <= last_original_node; w++) {
 	auto v = G.add_node();
 	G.add_edge(v, w);
 	for(auto incoming : G.get_node(w).in_edges()) {
@@ -48,10 +46,12 @@ void preprocess(Graph& G) {
 
 
 int main(int argc, char* argv[]) {
-    if(argc != 2) {
+    bool debug = false;
+    if(argc > 3) {
 	std::cout << "Usage: " << argv[0] << " <graph_file>\n";
     }
+    if(argc == 3) debug=true;
     Graph G = read_graph(argv[1]);
-    preprocess(G);
+    if(!debug) preprocess(G);
     std::cout << "Number of disjoint paths: " << get_max_flow(G, 0, 1) << std::endl;
 }
