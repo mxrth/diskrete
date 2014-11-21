@@ -1,5 +1,5 @@
-#include "graph.h";
-#include <set>;
+#include "graph.h"
+#include <set>
 
 
 /*
@@ -37,7 +37,7 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 
 	for (Graph::EdgeId eId : angrenzendeKanten) {
 		auto wId = getOtherNode(G, eId, currentNodeId);
-		if (visited.find(wId) != std::set::end) {
+		if (visited.find(wId) != visited.end()) {
 			continue;
 		}
 		flow[eId] = 1 - flow[eId];
