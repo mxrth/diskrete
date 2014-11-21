@@ -10,8 +10,9 @@ void to_digraph(Graph& G) {
 		visited[v] = true;
 		for (auto e : G.get_node(v).out_edges()) {
 			auto w = G.get_edge(e).get_head();
-			if (visited[w] || w > last_node)
+			if (visited[w] || w > last_node) {
 				continue;
+			}
 			visited[w] = true;
 
 			Graph::NodeId top = G.add_node();
@@ -20,6 +21,7 @@ void to_digraph(Graph& G) {
 			G.add_edge(top, bot);
 			G.add_edge(w, top);
 			G.add_edge(bot, v);
+			G.add_edge(bot, w);
 		}
 	}
 }
