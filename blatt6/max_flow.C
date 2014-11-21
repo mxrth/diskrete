@@ -22,16 +22,14 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 	auto currentNode = G.get_node(currentNodeId);
 	//sammle Kanten
 	for (auto eId : currentNode.in_edges()) {
-		if (flow[eId] == 0) {
-			continue;
+		if (flow[eId] == true) {
+			angrenzendeKanten.push_back(eId);
 		}
-		angrenzendeKanten.push_back(eId);
 	}
 	for (auto eId : currentNode.out_edges()) {
-		if (flow[eId] == 1) {
-			continue;
+		if (flow[eId] == false) {
+			angrenzendeKanten.push_back(eId);
 		}
-		angrenzendeKanten.push_back(eId);
 	}
 
 
@@ -40,7 +38,7 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 		if (visited.find(wId) != visited.end()) {
 			continue;
 		}
-		flow[eId] = 1 - flow[eId];
+		flow[eId] = !flow[eId];
 		visited.insert(wId);
 		if (wId == tId) {
 			return true;
@@ -49,7 +47,7 @@ bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId,
 			return true;
 		} else {
 			//ueber diese kante kommen wir nicht zum ziel -> rueckgaengeig machen
-			flow[eId] = 1 - flow[eId];
+			flow[eId] = !flow[eId];
 		}
 	}
 	return false;
