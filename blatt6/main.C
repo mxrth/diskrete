@@ -3,6 +3,21 @@
 
 using std::vector;
 
+void deleteDublicate(Graph& G) {
+	//"remove" dublicate edges
+	auto deadNode = G.add_node();
+	for (auto v : G._nodes) {
+		std::vector<bool> visited(G.num_nodes(), false);
+		for (auto eId : v.out_edges()) {
+			if (visited[G.get_edge(eId).get_head()]) {
+				G.change_head(eId, deadNode);
+			} else {
+				visited[G.get_edge(eId).get_head()] = true;
+			}
+		}
+	}
+}
+
 void to_digraph(Graph& G) {
 	Graph::EdgeId lastEdgeId = G.num_edges();
 	for (Graph::NodeId eId = 0; eId < lastEdgeId; eId++) {
@@ -21,6 +36,7 @@ void to_digraph(Graph& G) {
 
 void preprocess(Graph& G) {
 	Graph::NodeId last_original_node = G.num_nodes() - 1;
+	deleteDublicate(G);
 	to_digraph(G);
 //range over all nodes of the original graph (except s (=0) and t(=1))
 //for each node w, insert a new node v
@@ -47,11 +63,9 @@ int main(int argc, char* argv[]) {
 
 	Graph G = read_graph(argv[1]);
 
-	if (!debug){
+	if (!debug) {
 		preprocess(G);
 	}
-
-	print_graph(G);
 
 	std::cout << "Number of disjoint paths: " << get_max_flow(G, 0, 1)
 			<< std::endl;
