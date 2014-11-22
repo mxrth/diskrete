@@ -57,42 +57,47 @@ void assert(bool value, std::string message) {
 	}
 }
 
+//ID of THE edge will be 1
+Graph setupTestGraph(Graph::NodeId tailId, Graph::NodeId oldHeadId){
+	Graph G = read_graph("/home/bk/git/diskrete_max/blatt6/test/inst_02_new");
+	return G;
+}
+
 void testChangeHead() {
 	Graph::EdgeId eId = 1;
-	Graph::NodeId tailId = 0, oldHeadId = 1, newHeadId = 2;
+	Graph::NodeId tailId = 0, oldHeadId = 131, newHeadId = 2;
+	auto G1 = setupTestGraph(tailId, oldHeadId);
+	auto G2 = setupTestGraph(tailId, oldHeadId); //G2 will be modified
+	G2.change_head(eId, newHeadId);
 
-	Graph G(3);
-	G.add_edge(0, 1);
-	G.add_edge(tailId, oldHeadId); //THE edge
-	G.add_edge(0, 1);
-	G.add_edge(0, 2);
-	G.change_head(eId, newHeadId);
-	auto e = G.get_edge(eId);
-	auto newHead = G.get_node(newHeadId);
-	auto oldHead = G.get_node(oldHeadId);
-	auto tail = G.get_node(tailId);
-	assert(e.get_tail() == 0,
+	auto e2 = G2.get_edge(eId);
+	auto newHead1 = G1.get_node(newHeadId);
+	auto newHead2 = G2.get_node(newHeadId);
+	auto oldHead1 = G1.get_node(oldHeadId);
+	auto oldHead2 = G2.get_node(oldHeadId);
+	auto tail1 = G1.get_node(tailId);
+	auto tail2 = G2.get_node(tailId);
+
+	assert(e2.get_tail() == tailId,
 			"Tail should not change");
-	assert(e.get_head() == newHeadId,
+	assert(e2.get_head() == newHeadId,
 			"Head should change");
-	assert(newHead.in_edges().size() == 2,
+	assert(newHead2.in_edges().size() == newHead1.in_edges().size() + 1,
 			"Num in edges of new head");
-	assert(newHead.in_edges()[1] == eId,
+	assert(newHead2.in_edges()[newHead2.in_edges().size()-1] == eId,
 			"In edges of new head correct");
-	assert(newHead.out_edges().size() == 0,
+	assert(newHead2.out_edges().size() == newHead1.out_edges().size() ,
 			"Num out edges of new head should not change");
-	assert(oldHead.in_edges().size() == 2,
+	assert(oldHead2.in_edges().size() == oldHead1.in_edges().size() - 1,
 			"Num in edges of old head should change");
-	assert(oldHead.out_edges().size() == 0,
+	assert(oldHead2.out_edges().size() == oldHead1.out_edges().size(),
 			"Num out edges of old head should not change");
-	assert(oldHead.in_edges()[0] != eId,
-			"Edge should not be in inEdges of old head");
-	assert(oldHead.in_edges()[1] != eId,
-			"Edge should not be in inEdges of old head");
-	assert(tail.out_edges()[1] == eId,
-			"Edge should still be out edge of tail");
-	assert(tail.out_edges().size() == 4,
-			"Num out edges of tail should be correct");
+	for(auto inEdgeId : oldHead2.in_edges()){
+		assert(inEdgeId != eId,
+				"Edge should not be in inEdges of old head");
+	}
+	assert(tail2.out_edges().size() == tail1.out_edges().size(),
+			"Num out edges of tail should not change");
 }
 
 int main(int argc, char* argv[]) {
