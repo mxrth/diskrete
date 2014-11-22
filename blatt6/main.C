@@ -51,6 +51,50 @@ void preprocess(Graph& G) {
 	}
 }
 
+void assert(bool value, std::string message) {
+	if (!value) {
+		std::cout << "ERROR: " << message << "\n";
+	}
+}
+
+void testChangeHead() {
+	Graph::EdgeId eId = 1;
+	Graph::NodeId tailId = 0, oldHeadId = 1, newHeadId = 2;
+
+	Graph G(3);
+	G.add_edge(0, 1);
+	G.add_edge(tailId, oldHeadId); //THE edge
+	G.add_edge(0, 1);
+	G.add_edge(0, 2);
+	G.change_head(eId, newHeadId);
+	auto e = G.get_edge(eId);
+	auto newHead = G.get_node(newHeadId);
+	auto oldHead = G.get_node(oldHeadId);
+	auto tail = G.get_node(tailId);
+	assert(e.get_tail() == 0,
+			"Tail should not change");
+	assert(e.get_head() == newHeadId,
+			"Head should change");
+	assert(newHead.in_edges().size() == 2,
+			"Num in edges of new head");
+	assert(newHead.in_edges()[1] == eId,
+			"In edges of new head correct");
+	assert(newHead.out_edges().size() == 0,
+			"Num out edges of new head should not change");
+	assert(oldHead.in_edges().size() == 2,
+			"Num in edges of old head should change");
+	assert(oldHead.out_edges().size() == 0,
+			"Num out edges of old head should not change");
+	assert(oldHead.in_edges()[0] != eId,
+			"Edge should not be in inEdges of old head");
+	assert(oldHead.in_edges()[1] != eId,
+			"Edge should not be in inEdges of old head");
+	assert(tail.out_edges()[1] == eId,
+			"Edge should still be out edge of tail");
+	assert(tail.out_edges().size() == 4,
+			"Num out edges of tail should be correct");
+}
+
 int main(int argc, char* argv[]) {
 	bool debug = false;
 	if (argc > 3) {
@@ -62,6 +106,7 @@ int main(int argc, char* argv[]) {
 	std::cout << "DEBUG = " << debug << std::endl;
 
 	Graph G = read_graph(argv[1]);
+	testChangeHead();
 
 	if (!debug) {
 		preprocess(G);

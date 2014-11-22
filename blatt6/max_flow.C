@@ -69,7 +69,8 @@ int get_max_flow(Graph &G, Graph::NodeId s, Graph::NodeId tId) {
 		}
 	}
 }
-int countTotalFlow(Graph &G, Graph::NodeId s, std::vector<bool> &flow){
+
+int countTotalFlow(Graph &G, std::vector<bool> &flow){
 	int sum = 0;
 	for(Graph::NodeId eId = 0; eId < G.num_edges(); eId++){
 		sum += flow[eId];
@@ -100,6 +101,11 @@ int checkIntegrity(Graph &G, std::vector<bool> &flow){
 	for(Graph::NodeId vId = 2; vId < G.num_nodes(); vId++){
 		if(countInFlow(G, vId, flow) != countOutFlow(G, vId, flow)){
 			return 2;
+		}
+	}
+	for(Graph::NodeId vId = 2; vId < G.num_nodes(); vId++){
+		if(countInFlow(G, vId, flow) > 1){
+			return 3;
 		}
 	}
 	return 0;
