@@ -41,28 +41,23 @@ void to_digraph(Graph& G) {
 }
 
 void preprocess(Graph& G) {
-	Graph::NodeId last_original_node = G.num_nodes() - 1;
 	deleteDublicate(G);
 	to_digraph(G);
 //range over all nodes of the original graph (except s (=0) and t(=1))
 //for each node w, insert a new node v
 //add a node e=(v,w)
 //for each incoming node of w, change the head of that edge to v
-	for (Graph::NodeId w = 2; w <= last_original_node; w++) {
-		auto v = G.add_node();
 
-		//we are modifing in_edges so we iterate over a copy
-		Graph::EdgeId inEdges[G.get_node(w).in_edges().size()];
-		int i = 0;
-		for (auto incoming : G.get_node(w).in_edges()) {
-			inEdges[i++] = incoming;
+	Graph::NodeId last_original_node = G.num_nodes() - 1;
+	for(Graph::NodeId wId = 2; wId <= last_original_node; wId++){
+		auto vId = G.add_node();
+		auto incommingEdgeIds(G.get_node(wId).in_edges());
+		for(auto eId : incommingEdgeIds){
+			G.change_head(eId, vId);
 		}
-
-		for (auto incoming : inEdges) {
-			G.change_head(incoming, v);
-		}
-		G.add_edge(v, w);
+		G.add_edge(vId, wId);
 	}
+
 }
 
 void assert(bool value, std::string message) {
@@ -122,17 +117,12 @@ int main(int argc, char* argv[]) {
 	if (argc == 3)
 		debug = true;
 
-	std::cout << "DEBUG = " << debug << std::endl;
-
 	Graph G = read_graph(argv[1]);
-//	testChangeHead();
 
 	if (!debug) {
 		preprocess(G);
 	}
-	print_graph(G);
-	std::cout << "printed"<< std::endl;
 
-	std::cout << "Number of disjoint paths: " << get_max_flow(G, 0, 1)
-			<< std::endl;
+	std::cout << get_max_flow(G, 0, 1) << std::endl;
+	return 0;
 }
