@@ -13,6 +13,12 @@ void deleteDublicate(Graph& G) {
 				G.change_head(eId, deadNode);
 			} else {
 				visited[G.get_edge(eId).get_head()] = true;
+				auto e = G.get_edge(eId);
+				for(auto e2Id : G.get_node(e.get_head()).out_edges()){
+					if(G.get_edge(e2Id).get_head() == e.get_tail()){
+						G.change_head(e2Id, deadNode);
+					}
+				}
 			}
 		}
 	}
@@ -44,7 +50,15 @@ void preprocess(Graph& G) {
 //for each incoming node of w, change the head of that edge to v
 	for (Graph::NodeId w = 2; w <= last_original_node; w++) {
 		auto v = G.add_node();
+
+		//we are modifing in_edges so we iterate over a copy
+		Graph::EdgeId inEdges[G.get_node(w).in_edges().size()];
+		int i = 0;
 		for (auto incoming : G.get_node(w).in_edges()) {
+			inEdges[i++] = incoming;
+		}
+
+		for (auto incoming : inEdges) {
 			G.change_head(incoming, v);
 		}
 		G.add_edge(v, w);
@@ -111,11 +125,13 @@ int main(int argc, char* argv[]) {
 	std::cout << "DEBUG = " << debug << std::endl;
 
 	Graph G = read_graph(argv[1]);
-	testChangeHead();
+//	testChangeHead();
 
 	if (!debug) {
 		preprocess(G);
 	}
+	print_graph(G);
+	std::cout << "printed"<< std::endl;
 
 	std::cout << "Number of disjoint paths: " << get_max_flow(G, 0, 1)
 			<< std::endl;
