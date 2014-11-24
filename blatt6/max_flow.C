@@ -22,7 +22,7 @@ Graph::EdgeId findUsableEdge(Graph::NodeId node, Graph &G, vector<bool> &flow, v
     //sammle Kanten
     for (auto eId : currentNode.in_edges()) {
 	if (flow[eId] == true) {
-	    Graph::NodeId next_node = G.get_edge(eId).get_head();
+	    Graph::NodeId next_node = G.get_edge(eId).get_tail();
 	    if(!visited[next_node]) {
 		return eId;
 	    }
@@ -30,7 +30,7 @@ Graph::EdgeId findUsableEdge(Graph::NodeId node, Graph &G, vector<bool> &flow, v
     }
     for (auto eId : currentNode.out_edges()) {
 	if (flow[eId] == false) {
-	    Graph::NodeId next_node = G.get_edge(eId).get_tail();
+	    Graph::NodeId next_node = G.get_edge(eId).get_head();
 	    if(!visited[next_node]) {
 		return eId;
 	    }
