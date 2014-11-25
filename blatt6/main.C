@@ -41,14 +41,14 @@ void to_digraph(Graph& G) {
 }
 
 void preprocess(Graph& G) {
-	deleteDublicate(G);
+	//deleteDublicate(G);
+	Graph::NodeId last_original_node = G.num_nodes() - 1;
 	to_digraph(G);
 //range over all nodes of the original graph (except s (=0) and t(=1))
 //for each node w, insert a new node v
 //add a node e=(v,w)
 //for each incoming node of w, change the head of that edge to v
 
-	Graph::NodeId last_original_node = G.num_nodes() - 1;
 	for(Graph::NodeId wId = 2; wId <= last_original_node; wId++){
 		auto vId = G.add_node();
 		auto incommingEdgeIds(G.get_node(wId).in_edges());
