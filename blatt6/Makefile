@@ -1,7 +1,7 @@
 BLATT :=  $(notdir $(shell pwd))
 
 CXX := g++
-CPPFLAGS := -Wall -Wextra --std=c++11 --pedantic -O3
+CPPFLAGS := -Wall -Wextra --std=c++11 --pedantic  -g
 
 BINDIR := bin
 DISTDIR := ../dist

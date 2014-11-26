@@ -53,6 +53,16 @@ void Graph::change_head(EdgeId eId, NodeId newHead) {
 	_nodes[newHead].add_incoming_edge(eId);
 }
 
+void Graph::change_tail(EdgeId eId, NodeId newTail) {
+    Edge e = get_edge(eId);
+    auto positionEInOutgoing = std::find(
+			_nodes[e.get_tail()]._outgoing.begin(),
+			_nodes[e.get_tail()]._outgoing.end(), eId);
+    _nodes[e.get_tail()]._outgoing.erase(positionEInOutgoing);
+    _edges[eId]._tail = newTail;
+    _nodes[newTail].add_outgoing_edge(eId);
+}
+
 void Graph::Node::add_incoming_edge(EdgeId edge)
 {
       _incoming.push_back(edge);

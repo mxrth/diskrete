@@ -45,7 +45,7 @@ public:
       Graph();
 
       void change_head(EdgeId eId, NodeId newHead);
-
+      void change_tail(EdgeId eId, NodeId newTail); 
       EdgeId add_edge(NodeId tail, NodeId head);
       NodeId add_node();
 

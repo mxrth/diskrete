@@ -41,7 +41,7 @@ Graph::EdgeId findUsableEdge(Graph::NodeId node, Graph &G, vector<bool> &flow, v
 
 bool dfs(Graph &G, std::vector<bool> &flow, Graph::NodeId tId, Graph::NodeId sId) {
 
-    stack<Graph::EdgeId, vector<Graph::EdgeId>> path;
+    stack<Graph::EdgeId> path;
     vector<bool> visited(G.num_nodes(), false);
 
     Graph::NodeId cur = sId;
