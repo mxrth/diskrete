@@ -20,6 +20,7 @@ Graph::NodeId getOtherNode(Graph &G, Graph::EdgeId eId, Graph::NodeId vId) {
 Graph::EdgeId findUsableEdge(Graph::NodeId node, Graph &G, vector<bool> &flow, vector<bool> &visited) {
     auto currentNode = G.get_node(node);
     //sammle Kanten
+    
     for (auto eId : currentNode.in_edges()) {
 	if (flow[eId] == true) {
 	    Graph::NodeId next_node = G.get_edge(eId).get_tail();

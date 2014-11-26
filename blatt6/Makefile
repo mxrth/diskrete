@@ -1,7 +1,7 @@
 BLATT :=  $(notdir $(shell pwd))
 
 CXX := g++
-CPPFLAGS := -Wall -Wextra --std=c++11 --pedantic  -g
+CPPFLAGS := -Wall -Wextra --std=c++11 --pedantic -O3
 
 BINDIR := bin
 DISTDIR := ../dist
@@ -13,7 +13,7 @@ OBJECTS := graph.o main.o max_flow.o
 ###########################################
 
 $(EXECUTABLE): $(OBJECTS) 
-	$(CXX) -o $@ $^
+	$(CXX) $(CPPFLAGS) -o $@ $^
 
 graph.o: graph.C graph.h
 
